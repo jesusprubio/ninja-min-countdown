@@ -1,0 +1,60 @@
+<!--
+Copyright Jesus Perez <jesusprubio gmail com>
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!doctype html>
+
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <title>ninja-min-countdown</title>
+
+    <script src="../webcomponentsjs/webcomponents.min.js"></script>
+
+    <link rel="import" href="ninja-min-countdown.html">
+
+    <style>
+
+        html {
+            color: darkgray;
+            text-align: center;
+        }
+
+/*
+        ninja-min-countdown::shadow paper-button {
+            color : red;
+        }
+*/
+
+    </style>
+
+</head>
+
+<body unresolved>
+
+    <ninja-min-countdown></ninja-min-countdown>
+
+</body>
+
+<script>
+
+    this.document.querySelector('ninja-min-countdown').addEventListener('finished', function(e) {
+        alert('Done!');
+    });
+
+</script>
+
+</html>

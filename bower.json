@@ -1,0 +1,29 @@
+{
+  "name": "ninja-min-countdown",
+  "version": "0.0.1",
+  "description": "Element implementing a minute (or less) countdown.",
+  "authors": [ "Jesús Pérez (http://jesusprubio.name)"],
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "countdown",
+    "timer",
+    "paper"
+  ],
+  "main": "ninja-min-countdown.html",
+  "homepage": "https://github.com/jesusprubio/ninja-min-countdown/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/components/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.2",
+    "paper-button": "Polymer/paper-button#~0.5.2",
+    "moment": "~2.8.4"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.5"
+  }
+}
