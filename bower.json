@@ -1,0 +1,7 @@
+{
+  "name": "ninja-min-countdown#gh-pages",
+  "private": true,
+  "dependencies": {
+    "ninja-min-countdown": "jesusprubio/ninja-min-countdown#master"
+  }
+}

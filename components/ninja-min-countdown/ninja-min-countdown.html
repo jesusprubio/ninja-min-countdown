@@ -1,0 +1,204 @@
+<!--
+Copyright Jesus Perez <jesusprubio gmail com>
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-button/paper-button.html">
+
+<script src="../moment/moment.js"></script>
+
+<!--
+Element implementing a simple minute (or less) countdown.
+
+##### Example
+
+    <ninja-min-countdown></ninja-min-countdown>
+
+@element ninja-min-countdown
+@blurb Element implementing a ten seconds (or less) countdown.
+@status beta
+@homepage http://github.com/jesusprubio/ninja-min-countdown
+-->
+
+<polymer-element name="ninja-min-countdown" attributes="auto showPanel showTens initSecs">
+    <template>
+
+        <link rel="stylesheet" href="ninja-min-countdown.css">
+
+        <section id="countdown-box">
+            <p>
+                <template if="{{ showTens }}">
+                    {{ printedTime[0] }}
+                </template>
+                {{ printedTime[1] }}
+            </p>
+        </section>
+
+        <template if="{{ showPanel }}">
+            <section id="buttons-panel">
+                <paper-button raised on-click="{{ start }}" disabled?="{{ started }}">Start</paper-button>
+                <paper-button raised on-click="{{ pause }}" disabled?="{{ paused }}">Pause</paper-button>
+                <paper-button raised on-click="{{ resume }}" disabled?="{{ !paused }}">Resume</paper-button>
+                <paper-button raised on-click="{{ reset }}">Reset</paper-button>
+            </section>
+        </template>
+
+    </template>
+
+    <script>
+
+        Polymer('ninja-min-countdown', {
+            created : function() {
+                /** Starts the count automatically.
+                *
+                * @attribute auto
+                * @type boolean
+                * @default true
+                */
+                this.auto = true;
+                /** Show/hide the panel withe the buttons.
+                *
+                * @attribute showPanel
+                * @type boolean
+                * @default true
+                */
+                this.showPanel = true;
+                /** Show/hide the tens.
+                *
+                * @attribute showTens
+                * @type boolean
+                * @default true
+                */
+                this.showTens = true;
+                /** Sets the seconds to start from.
+                *
+                * @attribute initSecs
+                * @type number
+                * @default 60
+                */
+                this.initSecs = null;
+
+                // TODO: Private from here
+                this.countInterval = null;
+                // Moment.js timer
+                this.timer = null;
+                // Control vars
+                this.started = false;
+                this.paused = false;
+
+            },
+
+            ready : function() {
+                // default value || just in case
+                if (!this.initSecs || parseInt(this.initSecs) > 60) {
+                    this.initSecs = '60';
+                }
+                // Digits shown in the flip clock
+                this.printedTime = this.initSecs;
+                if (this.auto) { this.start(); }
+            },
+
+            /**
+            * Pauses the countdown.
+            *
+            * @method pause
+            */
+            pause : function() {
+                console.log('Countdown paused');
+                /**
+                * Fired when the countdown is paused.
+                *
+                * @event paused
+                */
+                this.fire('paused');
+                this.paused = true;
+            },
+
+            /**
+            * Resumes the countdown.
+            *
+            * @method resume
+            */
+            resume : function() {
+                console.log('Countdown resumed');
+                /**
+                * Fired when the countdown is resumed.
+                *
+                * @event resumed
+                */
+                this.fire('resumed');
+                this.started = true;
+                this.paused = false;
+            },
+
+            /**
+            * Resets the countdown.
+            *
+            * @method reset
+            */
+            reset : function() {
+                console.log('Countdown reseted');
+                /**
+                * Fired when the countdown is reseted.
+                *
+                * @event reseted
+                */
+                this.fire('reseted');
+                clearInterval(this.countInterval);
+                this.printedTime = this.initSecs;
+                this.started = false;
+                this.paused = false;
+            },
+
+            /**
+            * Starts the countdown.
+            *
+            * @method start
+            */
+            start : function() {
+                var self = this,
+                    countInterval;
+
+                this.timer = moment().seconds(this.initSecs);
+                console.log('Countdown started');
+                /**
+                * Fired when the countdown is started.
+                *
+                * @event started
+                */
+                this.fire('started');
+                this.started = true;
+                this.countInterval = setInterval(function() {
+                    if (self.started && !self.paused) {
+                        if (self.printedTime > 0) {
+                            self.printedTime = self.timer.subtract(1, 's').format('ss');
+                        } else {
+                            console.log('Countdown finished');
+                            /**
+                            * Fired when the countdown is finished.
+                            *
+                            * @event finished
+                            */
+                            self.fire('finished');
+                            clearInterval(self.countInterval);
+                        }
+                    }
+                }, 1000);
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
