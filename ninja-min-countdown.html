@@ -87,24 +87,25 @@ Element implementing a simple minute (or less) countdown.
                 * @type number
                 * @default 60
                 */
-                this.initSecs = '60';
+                this.initSecs = null;
 
                 // TODO: Private from here
-                // Digits shown in the flip clock
-                this.printedTime = this.initSecs;
                 this.countInterval = null;
                 // Moment.js timer
                 this.timer = null;
                 // Control vars
                 this.started = false;
                 this.paused = false;
+
             },
 
             ready : function() {
-                // just in case
-                if (parseInt(this.initSecs) > 60) {
+                // default value || just in case
+                if (!this.initSecs || parseInt(this.initSecs) > 60) {
                     this.initSecs = '60';
                 }
+                // Digits shown in the flip clock
+                this.printedTime = this.initSecs;
                 if (this.auto) { this.start(); }
             },
 
